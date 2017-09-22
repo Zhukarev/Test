@@ -11,9 +11,6 @@
 
     <div class="col-md-10 col-lg-10">
 
-<!--        --><?php //$comment = new CommentController; ?>
-<!--        --><?php //$insert = $comment->insert(); ?>
-
         <h1>Положительные и не очень отзывы на сайт</h1>
         <?php include 'list.php'?>
         <?php include 'form.php'?>

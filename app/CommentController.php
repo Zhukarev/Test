@@ -4,6 +4,8 @@ include_once 'Comment.php';
 
 class CommentController
 {
+    public $first;
+    public $second;
 
     /*
     проверка загружаемого файла на соответствие типа
@@ -43,22 +45,24 @@ class CommentController
     */
     public function insert()
     {
-        if (!isset($_FILES['image']['name']) || $_FILES['image']['name'] == NULL) {
-            $image = 'Chrome_Owned_96x96[1].png';
-        } elseif ($this->validateImg($_FILES['image']['tmp_name'])) {
-            $fileName = $_FILES['image']['name'];
-            $fileName = $this->renameImg($fileName);
-            copy($_FILES['image']['tmp_name'], "../www/images/" . basename($fileName));
-            $image = $fileName;
+        if (!$_POST['email']) {         //проверка на бота
+            if (!isset($_FILES['image']['name']) || $_FILES['image']['name'] == NULL) {
+                $image = 'Chrome_Owned_96x96[1].png';
+            } elseif ($this->validateImg($_FILES['image']['tmp_name'])) {
+                $fileName = $_FILES['image']['name'];
+                $fileName = $this->renameImg($fileName);
+                copy($_FILES['image']['tmp_name'], "../www/images/" . basename($fileName));
+                $image = $fileName;
+            } else {
+                echo "<script> alert('Система следит за тобой - систему не обманешь! Загружаемый файл не соответствует одному из возможных форматов(gif, jpg, png)');</script>";
+                $image = 'Chrome_Owned_96x96[1].png';
+            }
+
+            $comment = new Comment();
+            $comment->insertComent(htmlspecialchars($_POST['author']), htmlspecialchars($_POST['coment']), $image);
         } else {
-            echo "<script> alert('Система следит за тобой - систему не обманешь! Загружаемый файл не соответствует одному из возможных форматов(gif, jpg, png)');</script>";
-            $image = 'Chrome_Owned_96x96[1].png';
+            echo "<script> alert('Сохранено, возможно');</script>";
         }
-
-        $comment = new Comment();
-        $comment->insertComent(htmlspecialchars($_POST['author']), htmlspecialchars($_POST['coment']), $image);
-
-
     }
 
     /*

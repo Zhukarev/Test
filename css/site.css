@@ -52,6 +52,10 @@ h1 {
     width: 400px;
 }
 
+.email{
+    display:none;
+}
+
 #inputDownload {
     vertical-align: bottom;
 }
